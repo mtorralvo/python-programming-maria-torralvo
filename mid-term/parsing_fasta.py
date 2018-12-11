@@ -8,15 +8,28 @@
 
 
 ''' Create a new file where the records that are not from Homo sapiens will be written.
-Read the file and create a dictionary that associates the header and its sequence. Read headers, if string
-'OS = Homo sapiens' appears delete this header and its sequence from the dictionary.
-Copy the resulting dictionary on the new file.
-Print source organism ('SO = ...') from remaining headers and length of the sequences.'''
-
-#First, create the new file.
-end_file = open("not-Homo-sapiens.fasta", "w+")
+Read the file. In fasta files headers are marked with "<". Read headers, if string
+'Homo sapiens' does not appear copy the header and following sequence on the new file.
+Print source organism ('SO = ...') from headers and length of the sequences.'''
 
 #Read sprot_prot.fasta
-f = open("sprot_prot.fasta")
+fasta = open("sprot_prot.fasta")
+
+#Create the new file
+output = open("not_homo_sapiens.fasta", "w")
+
+seq = ''
+for line in fasta:
+  if line[0]=='>':
+    if seq:
+      if "Homo sapiens" not in header:
+        output.write(header + seq)
+    header = line
+    seq = ''
+  else:
+    seq = seq + line
+
+output.close()
+
 
 
